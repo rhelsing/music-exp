@@ -3,27 +3,45 @@ var pry = require('pryjs');
 
 var key = ['c', 'major']
 
+var notes = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
+
+function sharpen(note){
+  var noteString = note.replace(/\d+/g, '');
+  var noteInt = note.match(/\d+/)[0];
+  return notes[(notes.indexOf(noteString)+1)%12]+noteInt
+}
+
+function flatten(note){
+  var noteString = note.replace(/\d+/g, '');
+  var noteInt = note.match(/\d+/)[0];
+  if (notes.indexOf(noteString)-1 < 0){
+    return "b"+noteInt
+  }else{
+    return notes[notes.indexOf(noteString)-1]+noteInt
+  }
+}
+
 function deriveChord(in_root, key){
   if(in_root.includes("-")){
     var r = in_root.split("-")[0]
     var addition = in_root.split("-")[1]
     r = parseInt(r)-1
     if(addition == "aug"){
-      return [key[r], key[r+2], key[r+5]]
+      return [key[r], key[r+2], sharpen(key[r+4])]
     }else if(addition == "min"){
-      return [key[r], key[r+1], key[r+4]]
+      return [key[r], flatten(key[r+2]), key[r+4]]
     }else if(addition == "dim"){
-      return [key[r], key[r+1], key[r+3]]
+      return [key[r], flatten(key[r+2]), flatten(key[r+4])]
     }else if(addition == "sus4"){
-      return [key[r], key[r+3], key[r+4]]
+      return [key[r], sharpen(key[r+2]), key[r+4]]
     }else if(addition == "sus2"){
-      return [key[r], key[r+1], key[r+4]]
+      return [key[r], flatten(key[r+2]), key[r+4]]
     }else if(addition == "maj7"){
       return [key[r], key[r+2], key[r+4], key[r+6]]
     }else if(addition == "min7"){
-      return [key[r], key[r+1], key[r+4], key[r+5]]
+      return [key[r], flatten(key[r+2]), key[r+4], flatten(key[r+6])]
     }else if(addition == "7"){
-      return [key[r], key[r+2], key[r+4], key[r+5]]
+      return [key[r], key[r+2], key[r+4], flatten(key[r+6])]
     }else{
       return [key[r], key[r+2], key[r+4]]
     }
