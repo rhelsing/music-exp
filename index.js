@@ -1,21 +1,25 @@
 var scribble = require('scribbletune');
 var pry = require('pryjs');
 
-var key = ['c', 'major']
+var key = ['b', 'minor']
 
 var notes = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
 
 function sharpen(note){
   var noteString = note.replace(/\d+/g, '');
   var noteInt = note.match(/\d+/)[0];
-  return notes[(notes.indexOf(noteString)+1)%12]+noteInt
+  if(notes.indexOf(noteString)+1 > 11){
+    return "c"+(parseInt(noteInt)+1)
+  }else{
+    return notes[notes.indexOf(noteString)+1]+noteInt
+  }
 }
 
 function flatten(note){
   var noteString = note.replace(/\d+/g, '');
   var noteInt = note.match(/\d+/)[0];
   if (notes.indexOf(noteString)-1 < 0){
-    return "b"+noteInt
+    return "b"+(parseInt(noteInt)-1)
   }else{
     return notes[notes.indexOf(noteString)-1]+noteInt
   }
@@ -80,6 +84,7 @@ var clip12 = scribble.clip({notes: convertProgression('1-7 6-7 2-7 5-7', key), p
 var clip13 = scribble.clip({notes: convertProgression('1 4 4-min 1', key), pattern: 'x___'.repeat(4)});
 var clip14 = scribble.clip({notes: convertProgression('1 2 4-min 1', key), pattern: 'x___'.repeat(4)});
 var clip15 = scribble.clip({notes: convertProgression('1 4 1-aug 5', key), pattern: 'x___'.repeat(4)});
+var clip16 = scribble.clip({notes: convertProgression('1 5 1 7 3 5 1 1', key), pattern: 'x___'.repeat(8)});
 
 // eval(pry.it)
 
@@ -99,6 +104,7 @@ scribble.midi(clip12, 'output/clip12.mid');
 scribble.midi(clip13, 'output/clip13.mid');
 scribble.midi(clip14, 'output/clip14.mid');
 scribble.midi(clip15, 'output/clip15.mid');
+scribble.midi(clip16, 'output/reflek.mid');
 
 
 
