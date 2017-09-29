@@ -1,7 +1,7 @@
 var scribble = require('scribbletune');
 var pry = require('pryjs');
 
-var key = ['b', 'minor']
+var key = ['d', 'major']
 
 var notes = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
 
